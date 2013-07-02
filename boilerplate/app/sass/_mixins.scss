@@ -1,0 +1,17 @@
+@mixin background-img($imgpath,$position:0 0,$repeat: no-repeat) {
+    background: {
+        image: url($imgpath);
+        position: $position;
+        repeat: $repeat;
+    }
+}
+@mixin scroll(){
+	overflow:scroll;
+	-webkit-overflow-scrolling:touch;
+}
+@mixin border-radius($radius) {
+  -webkit-border-radius: $radius;
+  -moz-border-radius: $radius;
+  -khtml-border-radius: $radius;
+  border-radius: $radius;
+}
