@@ -5,7 +5,6 @@
 module.exports = function(grunt) {
   'use strict';
 
-
   var adapter;
   var device;
   var buildDir = 'build/app/';
@@ -18,31 +17,37 @@ module.exports = function(grunt) {
   // CUSTOM TASKS
   // ==========================================================================
   // Our own "Joshfire" files optimizer
-  grunt.registerMultiTask('joshoptimize', 'Optimize JS and HTML files for project using the Joshfire Framework', function (arg) {
-    var data=this.data;
-
-    device = this.data.device || defaultDevice;
-    adapter = this.data.adapter || defaultAdapter;
+  grunt.registerMultiTask(
+    'joshoptimize',
+    'Optimize JS and HTML files for project using the Joshfire Framework',
+    function (arg) {
 
     // Tell grunt this task is asynchronous.
     var done = this.async();
+    var data = this.data;
+    var jsFiles;
+    var htmlFiles;
+    var extension;
+
+    device = data.device || defaultDevice;
+    adapter = data.adapter || defaultAdapter;
 
     // Gets all the Javascript files - And accepts wildcard patterns
-    var jsFiles = this.data.src.filter(function(i) { return i.match(/\.js/); });
-    var ext;
-    // Gets all the html files - And accepts wildcard patterns
-    var htmlFiles = grunt.file.expand(
-      this.data.src.filter(function(i) {return (ext = i.match(/\.x?html/)); })
-    );
+    jsFiles = this.data.src.filter(function(i) { return i.match(/\.js/); });
 
+
+    // Gets all the html files - And accepts wildcard patterns
+    htmlFiles = grunt.file.expand(
+      this.data.src.filter(function(i) {return (extension = i.match(/\.x?html/)); })
+    );
 
     // Process each HTML files
     grunt.util.async.forEach(htmlFiles, function (HTMLFile) {
       var HTMLFileSrc = grunt.file.read(HTMLFile),
       //HTMLFileDest = 'build/' + HTMLFile.slice(0, - ext[0].length) + (device !== 'browser' ? '.' + device :'')+ ext,
-      HTMLFileDest = 'build/app/index'+(device !== 'browser' ? '.' + device :'')+ ext;
+      HTMLFileDest = 'build/app/index'+(device !== 'browser' ? '.' + device :'')+ extension;
 
-      grunt.file.write(HTMLFileDest, HTMLFileSrc.replace(new RegExp('data-adapter-'+adapter+' data-main="([^"]*)" src="[^"]*"'), 'src="main.' + adapter + '.optimized.js"'));
+      grunt.file.write(HTMLFileDest, HTMLFileSrc.replace(new RegExp('data-adapter-'+device+' data-main="([^"]*)" src="[^"]*"'), 'src="main.' + device + '.optimized.js"'));
       grunt.log.writeln('Wrote ' + HTMLFileDest);
     }, function(err) {
       done();
@@ -50,13 +55,22 @@ module.exports = function(grunt) {
 
     // Process each JS files
     grunt.util.async.forEach(jsFiles, optimizeJSFile, function(err) {
+      if(err) {
+        console.error(err);
+      }
       done();
     });
   });
 
-
-  grunt.registerTask('clean', 'Clean the mess', function(){
-    grunt.file.delete('./app/js/joshlib.js');
+  grunt.registerTask('notify-console', 'Notify the user that the build\'s over', function (arg) {
+    var d = new Date();
+    grunt.log.writeln('Build done, ended at ' +
+      d.getHours() + ':' + d.getMinutes() + ':' + d.getSeconds() + ' !');
+  });
+  grunt.registerTask('clean', 'Clean The Mess', function(){
+    grunt.file.delete('app/js/joshlib.js');
+    grunt.file.delete('app/js/main.optimized.js');
+    grunt.file.delete('app/js/main.phone.optimized.js');
   });
 
   // ==========================================================================
@@ -72,7 +86,6 @@ module.exports = function(grunt) {
           callback(error);
           return;
         }
-        // grunt.log.writeln('Wrote ' + JSFile + '.' + adap + '.optimized.js';);
         callback();
       }
 
@@ -90,17 +103,17 @@ module.exports = function(grunt) {
     }
 
     function moveFile(){
-        grunt.file.setBase('../..'); // Todo: should be dynamic with mainPath
-      
-        var filenameIn = JSFile + '.' + adapter + '.optimized.js';
-        var filenameOut = JSFile + '.'+device+'.optimized.js';
-        console.log('copy', filenameIn, 'to', filenameOut);
-        grunt.file.copy(mainPath + filenameIn, buildDir + filenameOut);
-        grunt.log.writeln('Wrote ' + filenameOut);
-        grunt.file.delete(mainPath+filenameIn);
-    }
-    grunt.file.setBase(mainPath);
+      grunt.file.setBase('../..'); // Todo: should be dynamic with mainPath
 
+      var filenameIn = JSFile + ( adapter !== 'none' ? '.' + adapter : '' ) + '.optimized.js';
+      var filenameOut = JSFile + '.'+device+'.optimized.js';
+
+      grunt.file.copy(mainPath + filenameIn, buildDir + filenameOut);
+      grunt.log.writeln('Wrote ' + filenameOut);
+      grunt.file.delete(mainPath+filenameIn);
+    }
+
+    grunt.file.setBase(mainPath);
     optimizeJSFileAdapter(adapter, function(){
       moveFile();
       callback();
@@ -135,7 +148,7 @@ module.exports = function(grunt) {
         // 'Gruntfile.js',
         'app/js/*.js',
         'tests/**/*.js'
-        ],
+      ],
       options: {
         curly: true,
         eqeqeq: true,
@@ -155,6 +168,7 @@ module.exports = function(grunt) {
         }
       }
     },
+
     watch: {
       files: ['app/sass/*.scss'],
       tasks: 'sass:dev'
@@ -175,6 +189,14 @@ module.exports = function(grunt) {
       //   adapter:'android',
       //   device:'phone'
       // }
+    },
+    notify: {
+      finished: {
+        options: {
+          title: 'CHANGE DAT NAME BRO', // c'mon don't blame :(
+          message: 'Build Finished !'
+        }
+      }
     }
   });
 
@@ -182,7 +204,26 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-sass');
   grunt.loadNpmTasks('grunt-contrib-nodeunit');
   grunt.loadNpmTasks('grunt-contrib-watch');
+  grunt.loadNpmTasks('grunt-notify');
+
 
   // Default task.
-  grunt.registerTask('default', ['clean','jshint', 'sass', 'joshoptimize:browser', 'joshoptimize:phone', 'clean']);
+  grunt.registerTask('default', [
+    'clean',
+    'jshint',
+    'sass',
+    'joshoptimize:browser',
+    'joshoptimize:phone',
+    'clean',
+    'notify-console',
+    'notify:finished'
+  ]);
 };
+
+
+
+
+
+
+
+
