@@ -1,1 +1,0 @@
-This folder should contain all the .ejs files which encapsulate templates. They will be required with the text! plugin.

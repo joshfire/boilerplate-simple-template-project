@@ -1,6 +1,3 @@
-[submodule "boilerplate/app/js/lib/framework"]
-	path = boilerplate/app/js/lib/framework
-	url = git@github.com:joshfire/joshfire-framework.git
-[submodule "sample-app/app/js/lib/framework"]
-	path = sample-app/app/js/lib/framework
+[submodule "app/js/lib/framework"]
+	path = app/js/lib/framework
 	url = git@github.com:joshfire/joshfire-framework.git

@@ -1,6 +1,0 @@
-*.DS_Store
-*.local.*
-node_modules/
-.sass-cache/
-build/
-app/main.*.optimized.js
