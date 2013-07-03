@@ -82,8 +82,8 @@ define([
     * to the controller
     **/
     initControllers: function initControllers() {
-      if ( Joshfire && Joshfire.factory ) {
-        var datasources = Joshfire.factory.getDataSource('main').children;
+      if ( window.Joshfire && window.Joshfire.factory ) {
+        var datasources = window.Joshfire.factory.getDataSource('main').children;
         for(var k in datasources) {
           // It shouldn't be hard to extend this controller so it expects to
           // work with a certain @outputType
@@ -107,11 +107,15 @@ define([
       this.views.layout = new Layout({
         el: '#app'
       });
-      this.views.toolbar = new Toolbar({});
+      this.views.toolbar = new Toolbar({
+        className: 'toolbar'
+      });
       // If we're expecting content we use a cardpanel
       // Otherwise we'll set a simple item to show something anyway
       if (this.controllers.length) {
-        this.views.content = new CardPanel();
+        this.views.content = new CardPanel({
+          className: 'content'
+        });
       } else {
         this.views.content = new Item();
       }
