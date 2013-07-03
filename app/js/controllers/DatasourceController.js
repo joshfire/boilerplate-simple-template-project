@@ -52,6 +52,7 @@ define([
       if(!this.view) {
         this.view = new List({
           id: this.slug,
+          className: 'list',
           itemOptions: {
             data: {
               slug: this.slug
@@ -69,6 +70,7 @@ define([
       if(!this.details) {
         this.details = new Item({
           id: this.slug + '-details',
+          className: 'details',
           template: '<h2><%= item.name %></h2><hr /><br /><p><%= item.articleBody ? item.articleBody : item.description %></p>'
         });
       }
