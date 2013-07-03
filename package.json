@@ -25,7 +25,7 @@
   },
   "joshfire": {
     "images": {
-      "small": "marketing/small.jpg",
+      "small": "marketing/small.png",
       "big": "marketing/big.png"
     },
     "datasources":{
@@ -42,11 +42,7 @@
         "devices": "phone",
         "startfile": "app/index.phone.html",
         "images": "marketing/small-phone.png",
-        "screenshots": [
-          "marketing/phone-screenshot1.jpg",
-          "marketing/phone-screenshot2.jpg",
-          "marketing/phone-screenshot3.jpg"
-        ],
+        "screenshots": [],
         "orientation": "portrait"
       }
     ],
