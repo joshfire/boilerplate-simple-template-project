@@ -25,32 +25,24 @@
   },
   "joshfire": {
     "images": {
-      "small": "marketing/small.jpg",
+      "small": "marketing/small.png",
       "big": "marketing/big.png"
     },
     "datasources":{
+      "main": {
+        "title": "Main tabs",
+        "multiple": true,
+        "maxLength": 8
+      }
     },
     "hooks": [
     ],
     "devices": [
       {
-        "devices": "a family/device id (phone, phone-ios, tv…)",
-        "startfile": "path to html file",
-        "images": "image in the template grid",
-        "screenshots": [
-          "screenshots of the app for this device"
-        ],
-        "orientation": "portrait or landscape, optional"
-      },
-      {
         "devices": "phone",
-        "startfile": "app/index.phone.optimized.html",
+        "startfile": "app/index.phone.html",
         "images": "marketing/small-phone.png",
-        "screenshots": [
-          "marketing/phone-screenshot1.jpg",
-          "marketing/phone-screenshot2.jpg",
-          "marketing/phone-screenshot3.jpg"
-        ],
+        "screenshots": [],
         "orientation": "portrait"
       }
     ],
