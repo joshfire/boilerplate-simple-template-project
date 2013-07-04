@@ -195,10 +195,6 @@ module.exports = function(grunt) {
             dest: 'build/app/media/',
             expand: true
           },
-          {
-            src: ['package.json'],
-            dest: 'build/'
-          },
           {/* Keep it until the build is done by the framework */
             cwd: 'app/',
             src: ['bootstrap.js'],
