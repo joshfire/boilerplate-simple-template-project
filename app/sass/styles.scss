@@ -146,6 +146,15 @@ a {
       border-top: 41px solid transparent;
       top: -1px;
     }
+    &:before {
+      display: block;
+      content: " ";
+      position: absolute;
+      border-right: 30px solid #ff0066;
+      border-bottom: 41px solid transparent;
+      top: -1px;
+      right: 0;
+    }
   }
   p {
     line-height: 30px;
