@@ -167,4 +167,51 @@ a {
 }
 
 
+@keyframes loaderreveal {
+  from { transform: scale(0.001); }
+  to { transform: scale(1); }
+}
 
+@keyframes loaderslide {
+  to { transform: translateX(30px) }
+}
+
+  .loader-wrapper {
+  .loader {
+    position: relative;
+    width: 80px;
+    margin: 100px auto;
+  }
+
+  .dot {
+    width: 20px;
+    height: 20px;
+    border-radius: 20px;
+    background: #333;
+    position: absolute;
+    animation-duration: 0.5s;
+    animation-timing-function: ease-in-out;
+    animation-iteration-count: infinite;
+  }
+
+  .dot1, .dot2 {
+    left: 0;
+  }
+
+  .dot3 { left: 30px; }
+
+  .dot4 { left: 60px; }
+
+  .dot1 {
+    animation-name: loaderreveal;
+  }
+
+  .dot2, .dot3 {
+    animation-name: loaderslide;
+  }
+
+  .dot4 {
+    animation-name: loaderreveal;
+    animation-direction: reverse; /* thx @HugoGiraudel */
+  }
+}
