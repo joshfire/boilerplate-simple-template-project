@@ -1,6 +1,6 @@
 define([
-  'app',
-  'router'
+  'js/app',
+  'js/router'
 ], function(
   App,
   Router

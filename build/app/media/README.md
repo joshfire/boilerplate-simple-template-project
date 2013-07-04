@@ -1,0 +1,1 @@
+This folder should contain any media the app may need (images, sprites, videos, audio, etc.)

@@ -4,7 +4,7 @@ define([
   'joshlib!collection',
   'joshlib!ui/Item',
   'joshlib!ui/List',
-  'Controller'
+  'js/controllers/Controller'
 ], function(
   _,
   woodman,
@@ -58,6 +58,7 @@ define([
               slug: this.slug
             }
           },
+          loadingClass: 'loading',
           collection: this.collection,
           itemTemplate: '<a href="#<%= slug  %>/<%= offset %>"><%= item.name %></a>'
         });
@@ -71,7 +72,7 @@ define([
         this.details = new Item({
           id: this.slug + '-details',
           className: 'details',
-          template: '<h2><%= item.name %></h2><hr /><br /><p><%= item.articleBody ? item.articleBody : item.description %></p>'
+          template: '<h2><%= item.name %></h2><br /><p><%= item.articleBody ? item.articleBody : item.description %></p>'
         });
       }
 

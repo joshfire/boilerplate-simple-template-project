@@ -9,8 +9,8 @@ define([
   'joshlib!ui/CardPanel',
   'joshlib!ui/Item',
 
-  'views/Toolbar',
-  'controllers/DatasourceController'
+  'js/views/Toolbar',
+  'js/controllers/DatasourceController'
 ], function(
   Backbone,
   _,

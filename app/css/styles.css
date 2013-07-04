@@ -3,7 +3,9 @@ html, body {
   padding: 0;
   overflow: hidden;
   width: 100%;
-  height: 100%; }
+  height: 100%;
+  font-family: "Helvetica Neue", Arial, sans-serif;
+  font-weight: lighter; }
 
 a {
   text-decoration: none; }
@@ -17,7 +19,8 @@ a {
 .toolbar {
   text-align: center; }
   .toolbar ul {
-    padding: 0; }
+    padding: 20px;
+    margin: 0; }
   .toolbar li {
     display: inline-block;
     margin: 0 10px; }
@@ -43,38 +46,46 @@ a {
   padding-top: 50px;
   box-sizing: border-box; }
 
-.content .list ul {
-  padding: 0 20px; }
-.content .list li {
-  list-style: none;
-  text-decoration: none;
-  width: 100%;
-  height: 40px; }
-.content .list a {
-  background-color: #FFF;
-  color: #000;
-  display: block;
-  width: 100%;
+.content .list {
   height: 100%;
-  line-height: 40px;
-  padding: 0 10px;
-  box-sizing: border-box;
-  position: relative; }
-  .content .list a:hover {
-    color: #FFF;
-    background-color: #000; }
-    .content .list a:hover:after {
-      color: #FFF; }
-  .content .list a:after {
-    display: block;
-    content: '>';
-    position: absolute;
-    right: 0;
-    top: 0;
-    height: 40px;
-    width: 20px;
+  overflow: auto; }
+  .content .list ul {
+    padding: 0 20px; }
+  .content .list li {
+    list-style: none;
+    text-decoration: none;
+    width: 100%;
+    height: 40px; }
+  .content .list a {
+    background-color: #FFF;
     color: #000;
-    z-index: 2; }
+    display: block;
+    width: 100%;
+    height: 100%;
+    line-height: 40px;
+    padding: 0 10px;
+    box-sizing: border-box;
+    position: relative; }
+    .content .list a:hover {
+      color: #FFF;
+      background-color: #000; }
+      .content .list a:hover:after {
+        color: #FFF; }
+    .content .list a:after {
+      display: block;
+      content: '>';
+      position: absolute;
+      right: 0;
+      top: 0;
+      height: 40px;
+      width: 20px;
+      color: #000;
+      z-index: 2; }
+
+.content .loading {
+  background: #000;
+  width: 100%;
+  height: 100%; }
 
 .content .details {
   padding: 0 20px;
@@ -87,7 +98,19 @@ a {
     color: #FFF;
     text-align: center;
     line-height: 40px;
-    margin: 0; }
+    margin: 0;
+    position: relative;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis; }
+    .content .details h2:after {
+      display: block;
+      content: " ";
+      position: absolute;
+      left: 0;
+      border-left: 30px solid #ff0066;
+      border-top: 41px solid transparent;
+      top: -1px; }
   .content .details p {
     line-height: 30px;
     padding: 0;

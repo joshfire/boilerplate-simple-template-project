@@ -16,9 +16,24 @@ module.exports = function(grunt) {
   // ==========================================================================
   // CUSTOM TASKS
   // ==========================================================================
+
+  grunt.registerTask('notify-console', 'Notify the user that the build\'s over', function (arg) {
+    var d = new Date();
+    grunt.log.writeln('Build done, ended at ' +
+      d.getHours() + ':' + d.getMinutes() + ':' + d.getSeconds() + ' !');
+  });
+
+  grunt.registerTask('clean', 'Clean The Mess', function(){
+    grunt.file.delete('app/js/joshlib.js');
+    var files = grunt.file.expand('app/js/main*optimized.js');
+    if(files.length) {
+      grunt.file.delete(files);
+    }
+  });
+
   // Our own "Joshfire" files optimizer
   grunt.registerMultiTask(
-    'joshoptimize',
+    'build',
     'Optimize JS and HTML files for project using the Joshfire Framework',
     function (arg) {
 
@@ -45,9 +60,9 @@ module.exports = function(grunt) {
     grunt.util.async.forEach(htmlFiles, function (HTMLFile) {
       var HTMLFileSrc = grunt.file.read(HTMLFile),
       //HTMLFileDest = 'build/' + HTMLFile.slice(0, - ext[0].length) + (device !== 'browser' ? '.' + device :'')+ ext,
-      HTMLFileDest = 'build/app/index'+(device !== 'browser' ? '.' + device :'')+ extension;
+      HTMLFileDest = 'build/app/index' + (adapter !== 'none' ? '.' + adapter : '') + extension;
 
-      grunt.file.write(HTMLFileDest, HTMLFileSrc.replace(new RegExp('data-adapter-'+device+' data-main="([^"]*)" src="[^"]*"'), 'src="main.' + device + '.optimized.js"'));
+      grunt.file.write(HTMLFileDest, HTMLFileSrc.replace(new RegExp('data-adapter-' + adapter + ' data-main="([^"]*)" src="[^"]*"'), 'src="main.' + adapter + '.optimized.js"'));
       grunt.log.writeln('Wrote ' + HTMLFileDest);
     }, function(err) {
       done();
@@ -60,17 +75,6 @@ module.exports = function(grunt) {
       }
       done();
     });
-  });
-
-  grunt.registerTask('notify-console', 'Notify the user that the build\'s over', function (arg) {
-    var d = new Date();
-    grunt.log.writeln('Build done, ended at ' +
-      d.getHours() + ':' + d.getMinutes() + ':' + d.getSeconds() + ' !');
-  });
-  grunt.registerTask('clean', 'Clean The Mess', function(){
-    grunt.file.delete('app/js/joshlib.js');
-    grunt.file.delete('app/js/main.optimized.js');
-    grunt.file.delete('app/js/main.phone.optimized.js');
   });
 
   // ==========================================================================
@@ -106,17 +110,21 @@ module.exports = function(grunt) {
       grunt.file.setBase('../..'); // Todo: should be dynamic with mainPath
 
       var filenameIn = JSFile + ( adapter !== 'none' ? '.' + adapter : '' ) + '.optimized.js';
-      var filenameOut = JSFile + '.'+device+'.optimized.js';
+      var filenameOut = JSFile + ( adapter !== 'none' ? '.' + adapter : '' ) + '.optimized.js';
 
       grunt.file.copy(mainPath + filenameIn, buildDir + filenameOut);
       grunt.log.writeln('Wrote ' + filenameOut);
-      grunt.file.delete(mainPath+filenameIn);
+      grunt.file.delete(mainPath + filenameIn);
     }
 
     grunt.file.setBase(mainPath);
-    optimizeJSFileAdapter(adapter, function(){
-      moveFile();
-      callback();
+    optimizeJSFileAdapter(adapter, function(error){
+      if(error) {
+        console.error(error);
+      } else {
+        moveFile();
+        callback();
+      }
     });
   }
 
@@ -126,8 +134,12 @@ module.exports = function(grunt) {
     sass: {
       dist: {
         files: {
-          'build/app/css/styles.css': 'app/sass/styles.scss',
-          'build/app/css/styles.phone.css': 'app/sass/styles.phone.scss'
+          'app/css/styles.css'          : 'app/sass/styles.scss',
+          'app/css/styles.phone.css'    : 'app/sass/styles.phone.scss',
+          'app/css/styles.android.css'  : 'app/sass/styles.android.scss',
+          'app/css/styles.ios.css'      : 'app/sass/styles.ios.scss',
+          'app/css/styles.googletv.css' : 'app/sass/styles.googletv.scss',
+          'app/css/styles.tv.css'       : 'app/sass/styles.tv.scss'
         }
       },
       dev: {
@@ -138,8 +150,12 @@ module.exports = function(grunt) {
           // compass: true
         },
         files: {
-          'app/css/styles.css': 'app/sass/styles.scss',
-          'app/css/styles.phone.css': 'app/sass/styles.phone.scss'
+          'app/css/styles.css'          : 'app/sass/styles.scss',
+          'app/css/styles.phone.css'    : 'app/sass/styles.phone.scss',
+          'app/css/styles.android.css'  : 'app/sass/styles.android.scss',
+          'app/css/styles.ios.css'      : 'app/sass/styles.ios.scss',
+          'app/css/styles.googletv.css' : 'app/sass/styles.googletv.scss',
+          'app/css/styles.tv.css'       : 'app/sass/styles.tv.scss'
         }
       }
     },
@@ -168,27 +184,51 @@ module.exports = function(grunt) {
         }
       }
     },
-
+    /**
+     * Copy static resources (images, package.json) to build folder
+     */
+    copy: {
+      main: {
+        files: [
+          {
+            cwd: 'app/media/',
+            src: ['**'],
+            dest: 'build/app/media/',
+            expand: true
+          },
+          {
+            src: ['package.json'],
+            dest: 'build/'
+          },
+          {/* Keep it until the build is done by the framework */
+            cwd: 'app/',
+            src: ['bootstrap.js'],
+            dest: 'build/app/',
+            expand: true
+          }
+        ]
+      }
+    },
     watch: {
       files: ['app/sass/*.scss'],
       tasks: 'sass:dev'
     },
 
-    joshoptimize: {
-      phone: {
-        src: ['main.js', 'app/index.phone.html'],
-        adapter: 'ios',
-        device:'phone'
-      },
+    build: {
       browser:{
         src: ['main.js', 'app/index.html'],
         adapter:'none'
+      },
+      phone: {
+        src: ['main.js', 'app/index.phone.html'],
+        adapter: 'phone',
+        device:'phone'
+      },
+      android: {
+        src: ['main.js', 'app/index.android.html'],
+        adapter:'android',
+        device: 'phone'
       }
-      // android: {
-      //   src: ['main.js', 'app/index.android.html'],
-      //   adapter:'android',
-      //   device:'phone'
-      // }
     },
     notify: {
       finished: {
@@ -200,6 +240,7 @@ module.exports = function(grunt) {
     }
   });
 
+  grunt.loadNpmTasks('grunt-contrib-copy');
   grunt.loadNpmTasks('grunt-contrib-jshint');
   grunt.loadNpmTasks('grunt-contrib-sass');
   grunt.loadNpmTasks('grunt-contrib-nodeunit');
@@ -212,8 +253,50 @@ module.exports = function(grunt) {
     'clean',
     'jshint',
     'sass',
-    'joshoptimize:browser',
-    'joshoptimize:phone',
+    'build:browser',
+    'copy',
+    'clean',
+    'notify-console',
+    'notify:finished'
+  ]);
+  grunt.registerTask('phone', [
+    'clean',
+    'jshint',
+    'sass',
+    'build:phone',
+    'copy',
+    'clean',
+    'notify-console',
+    'notify:finished'
+  ]);
+  grunt.registerTask('ios', [
+    'clean',
+    'jshint',
+    'sass',
+    'build:ios',
+    'copy',
+    'clean',
+    'notify-console',
+    'notify:finished'
+  ]);
+  grunt.registerTask('android', [
+    'clean',
+    'jshint',
+    'sass',
+    'build:ios',
+    'copy',
+    'clean',
+    'notify-console',
+    'notify:finished'
+  ]);
+  grunt.registerTask('all', [
+    'clean',
+    'jshint',
+    'sass',
+    'build:browser',
+    'build:phone',
+    'build:android',
+    'copy',
     'clean',
     'notify-console',
     'notify:finished'
