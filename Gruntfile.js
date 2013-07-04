@@ -8,7 +8,7 @@ module.exports = function(grunt) {
   var adapter;
   var device;
   var buildDir = 'build/app/';
-  var mainPath = 'app/js/';
+  var mainPath = 'app/';
 
   var defaultAdapter = 'none';
   var defaultDevice = 'browser';
@@ -82,7 +82,6 @@ module.exports = function(grunt) {
   // ==========================================================================
   function optimizeJSFile(JSFile, callback) {
     JSFile = JSFile.slice(0, -3); // (remove ".js")
-
     function optimizeJSFileAdapter(adap, callback) {
 
       function doneCallback(error, result, code) {
@@ -97,7 +96,7 @@ module.exports = function(grunt) {
       var spawnOptions = {
         cmd: 'node',
         args: [
-          'lib/framework/scripts/optimize.js',
+          'js/lib/framework/scripts/optimize.js',
           adap,
           JSFile
         ]
@@ -107,18 +106,18 @@ module.exports = function(grunt) {
     }
 
     function moveFile(){
-      grunt.file.setBase('../..'); // Todo: should be dynamic with mainPath
+      grunt.file.setBase('..'); // Todo: should be dynamic with mainPath
 
       var filenameIn = JSFile + ( adapter !== 'none' ? '.' + adapter : '' ) + '.optimized.js';
       var filenameOut = JSFile + ( adapter !== 'none' ? '.' + adapter : '' ) + '.optimized.js';
-
+      console.log(mainPath + filenameIn, buildDir + filenameOut);
       grunt.file.copy(mainPath + filenameIn, buildDir + filenameOut);
       grunt.log.writeln('Wrote ' + filenameOut);
       grunt.file.delete(mainPath + filenameIn);
     }
 
     grunt.file.setBase(mainPath);
-    optimizeJSFileAdapter(adapter, function(error){
+    optimizeJSFileAdapter(adapter, function(error) {
       if(error) {
         console.error(error);
       } else {
