@@ -1,7 +1,8 @@
 {
   "name": "simple-template-boilerplate",
+  "fullName": "Simple Template Boilerplate",
   "version": "0.0.1",
-  "description": "Simple Template Boilerplate",
+  "description": "A starting project to create an application template for the Joshfire Factory",
   "author": "Joshfire",
   "contributors": [],
   "repository": {
