@@ -52,6 +52,7 @@
       "schema": {
       },
       "form": [
+        "datasources.main"
       ]
     },
 
