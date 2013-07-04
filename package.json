@@ -41,7 +41,7 @@
     "devices": [
       {
         "devices": "phone",
-        "startfile": "app/index.phone.html",
+        "startfile": "buid/app/index.phone.html",
         "images": "marketing/small-phone.png",
         "screenshots": [],
         "orientation": "portrait"
