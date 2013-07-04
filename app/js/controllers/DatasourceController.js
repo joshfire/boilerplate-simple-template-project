@@ -3,7 +3,8 @@ define([
   'joshlib!utils/woodman',
   'joshlib!collection',
   'joshlib!ui/Item',
-  'joshlib!ui/List',
+
+  'js/views/List',
   'js/controllers/Controller'
 ], function(
   _,
@@ -28,8 +29,6 @@ define([
 
       this.onNavigate = _.bind(this.onNavigate, this);
       this.onNavigateDetails = _.bind(this.onNavigateDetails, this);
-
-      this.collection.fetch();
     },
 
     onNavigate: function () {
@@ -53,6 +52,7 @@ define([
         this.view = new List({
           id: this.slug,
           className: 'list',
+          customLoadEvent: true,
           itemOptions: {
             data: {
               slug: this.slug
@@ -63,7 +63,7 @@ define([
           itemTemplate: '<a href="#<%= slug  %>/<%= offset %>"><%= item.name %></a>'
         });
       }
-
+      this.collection.fetch();
       return this.view;
     },
 
