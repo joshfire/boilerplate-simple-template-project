@@ -1,0 +1,15 @@
+@keyframes reveal {
+  from { transform: scale(0.001); }
+  to { transform: scale(1); }
+}
+@-webkit-keyframes reveal {
+  from { -webkit-transform: scale(0.001); }
+  to { -webkit-transform: scale(1); }
+}
+
+@keyframes slide {
+  to { -webkit-transform: translateX(15px) }
+}
+@-webkit-keyframes slide {
+  to { -webkit-transform: translateX(15px) }
+}

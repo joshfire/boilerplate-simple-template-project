@@ -1,3 +1,35 @@
+@keyframes reveal {
+  from {
+    transform: scale(0.001);
+  }
+
+  to {
+    transform: scale(1);
+  }
+}
+
+@-webkit-keyframes reveal {
+  from {
+    -webkit-transform: scale(0.001);
+  }
+
+  to {
+    -webkit-transform: scale(1);
+  }
+}
+
+@keyframes slide {
+  to {
+    -webkit-transform: translateX(15px);
+  }
+}
+
+@-webkit-keyframes slide {
+  to {
+    -webkit-transform: translateX(15px);
+  }
+}
+
 html, body {
   margin: 0;
   padding: 0;
@@ -60,7 +92,22 @@ a {
   height: 100%;
   overflow: auto;
 }
+.content .list.loading ul {
+  padding-bottom: 40px;
+}
+.content .list.loading ul:after {
+  content: 'Loading ...';
+  display: block;
+  position: absolute;
+  z-index: 2;
+  width: 100%;
+  height: 40px;
+  line-height: 30px;
+  text-align: center;
+  bottom: 0;
+}
 .content .list ul {
+  position: relative;
   padding: 0 20px;
 }
 .content .list li {
@@ -76,9 +123,12 @@ a {
   width: 100%;
   height: 100%;
   line-height: 40px;
-  padding: 0 10px;
+  padding: 0 40px 0 10px;
   box-sizing: border-box;
   position: relative;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 .content .list a:hover {
   color: #FFF;
@@ -99,12 +149,6 @@ a {
   z-index: 2;
 }
 
-.content .loading {
-  background: #000;
-  width: 100%;
-  height: 100%;
-}
-
 .content .details {
   padding: 0 20px;
   overflow: auto;
@@ -112,15 +156,18 @@ a {
   -webkit-overflow-scrolling: touch;
 }
 .content .details h2 {
-  background: #000;
+  position: relative;
   height: 40px;
+  padding: 0 16px;
+  width: 100%;
+  box-sizing: border-box;
+  margin: 0;
+  background: #000;
   color: #FFF;
   text-align: center;
   line-height: 40px;
-  margin: 0;
-  position: relative;
-  white-space: nowrap;
   overflow: hidden;
+  white-space: nowrap;
   text-overflow: ellipsis;
 }
 .content .details h2:after {
@@ -131,6 +178,15 @@ a {
   border-left: 30px solid #ff0066;
   border-top: 41px solid transparent;
   top: -1px;
+}
+.content .details h2:before {
+  display: block;
+  content: " ";
+  position: absolute;
+  border-right: 30px solid #ff0066;
+  border-bottom: 41px solid transparent;
+  top: -1px;
+  right: 0;
 }
 .content .details p {
   line-height: 30px;
@@ -150,54 +206,49 @@ a {
   border-bottom-color: black;
 }
 
-@keyframes loaderreveal {
-  from {
-    transform: scale(0.001);
-  }
-
-  to {
-    transform: scale(1);
-  }
-}
-
-@keyframes loaderslide {
-  to {
-    transform: translateX(30px);
-  }
-}
-
+/**
+* A pretty nice CSS loader
+**/
 .loader-wrapper .loader {
   position: relative;
-  width: 80px;
-  margin: 100px auto;
+  width: 40px;
+  margin: 50px auto;
 }
 .loader-wrapper .dot {
-  width: 20px;
-  height: 20px;
-  border-radius: 20px;
+  width: 10px;
+  height: 10px;
+  border-radius: 10px;
   background: #333;
   position: absolute;
   animation-duration: 0.5s;
   animation-timing-function: ease-in-out;
   animation-iteration-count: infinite;
+  -webkit-animation-duration: 0.5s;
+  -webkit-animation-timing-function: ease-in-out;
+  -webkit-animation-iteration-count: infinite;
 }
 .loader-wrapper .dot1, .loader-wrapper .dot2 {
   left: 0;
 }
 .loader-wrapper .dot3 {
+  left: 15px;
+}
+.loader-wrapper .dot4 {
   left: 30px;
 }
-.loader-wrapper .dot4 {
-  left: 60px;
-}
 .loader-wrapper .dot1 {
-  animation-name: loaderreveal;
+  animation-name: reveal;
+  -webkit-animation-name: reveal;
 }
 .loader-wrapper .dot2, .loader-wrapper .dot3 {
-  animation-name: loaderslide;
+  animation-name: slide;
+  -webkit-animation-name: slide;
 }
 .loader-wrapper .dot4 {
-  animation-name: loaderreveal;
+  animation-name: reveal;
+  -webkit-animation-name: reveal;
   animation-direction: reverse;
+  /* thx @HugoGiraudel */
+  -webkit-animation-direction: reverse;
   /* thx @HugoGiraudel */
 }

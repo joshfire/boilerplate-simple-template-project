@@ -1,3 +1,13 @@
+/**
+ * app — Main App Controller
+ * This is the "brain" of the app ; not to be confused with the main.js which is a launcher.
+ * It creates the main "static" views of the app :
+  Layout
+    L Toolbar
+    L CardPanel
+      L  n * datasource list view
+      L  n * details list view
+ */
 define([
   // Libs
   'joshlib!vendor/backbone',
