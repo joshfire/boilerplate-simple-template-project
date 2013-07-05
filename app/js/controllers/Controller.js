@@ -8,14 +8,13 @@ define([
   var Controller = function(app, opt) {
     this.app = app;
 
-    // This calls the controller's constructor.
-    // Useful when subclasses extend the controller and have
-    // specific initialization processes.
+    // Calls the controller's "constructor".
     if (this.initialize) {
       this.initialize(opt);
     }
   };
 
+  // We'll use the extend function of Backbone.Model to enable heritage on our controller
   Controller.extend = Backbone.Model.extend;
   return Controller;
 });

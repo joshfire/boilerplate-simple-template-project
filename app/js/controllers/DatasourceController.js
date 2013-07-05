@@ -41,6 +41,7 @@ define([
       this.slug = opt.slug || '';
       this.index = opt.index;
 
+      // Bind them to stay in context
       this.onNavigate = _.bind(this.onNavigate, this);
       this.onNavigateDetails = _.bind(this.onNavigateDetails, this);
     },
