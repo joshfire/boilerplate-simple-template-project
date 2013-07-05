@@ -1,82 +1,81 @@
 {
-  "name": "simple-template-boilerplate",
-  "fullName": "Simple Template Boilerplate",
-  "version": "0.0.1",
-  "description": "A starting project to create an application template for the Joshfire Factory",
-  "author": "Joshfire",
-  "contributors": [],
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/joshfire/simple-template-boilerplate"
+  "name"            : "simple-template-boilerplate",
+  "fullName"        : "Simple Template Boilerplate",
+  "version"         : "0.0.1",
+  "description"     : "A starting project to create an application template for the Joshfire Factory",
+  "author"          : "Joshfire",
+  "contributors"    : [],
+  "repository"      : {
+    "type"            : "git",
+    "url"             : "https://github.com/joshfire/simple-template-boilerplate"
   },
-  "keywords": [],
-  "license": "",
-  "engines": {},
-  "dependencies": {},
-  "devDependencies": {
+  "keywords"        : [],
+  "license"         : "",
+  "engines"         : {},
+  "dependencies"    : {},
+  "devDependencies" : {
     "grunt": "0.4.x",
-    "grunt-contrib-jshint": "0.4.x",
-    "grunt-contrib-nodeunit": "0.1.0",
-    "grunt-contrib-sass": "0.3.x",
-    "grunt-contrib-watch": "0.1.4",
-    "grunt-contrib-copy": "0.4.x",
-    "grunt-notify": "0.2.4",
-    "requirejs": "2.1.4",
-    "jasmine-node": "1.0.28",
-    "grunt-cli": "0.1.6"
+    "grunt-contrib-jshint"    : "0.4.x",
+    "grunt-contrib-nodeunit"  : "0.1.0",
+    "grunt-contrib-sass"      : "0.3.x",
+    "grunt-contrib-watch"     : "0.1.4",
+    "grunt-contrib-copy"      : "0.4.x",
+    "grunt-notify"            : "0.2.4",
+    "requirejs"               : "2.1.4",
+    "jasmine-node"            : "1.0.28",
+    "grunt-cli"               : "0.1.6"
   },
-  "joshfire": {
-    "images": {
-      "small": "marketing/small.png",
-      "big": "marketing/big.png"
+  "joshfire"        : {
+    "images"          : {
+      "small"           : "marketing/small.png",
+      "big"             : "marketing/big.png"
     },
-    "datasources":{
-      "main": {
-        "title": "Main tabs",
-        "multiple": true,
-        "maxLength": 8
+    "datasources"   : {
+      "main"          : {
+        "title"         : "Main tabs",
+        "multiple"      : true,
+        "maxLength"     : 8
       }
     },
-    "hooks": [
+    "hooks"         : [
     ],
-    "devices": [
+    "devices"       : [
       {
-        "devices": "phone",
-        "startfile": "build/app/index.phone.html",
-        "images": "marketing/small-phone.png",
-        "screenshots": [],
-        "orientation": "portrait"
+        "devices"       : "phone",
+        "startfile"     : "build/app/index.phone.html",
+        "images"        : "marketing/small-phone.png",
+        "screenshots"   : [],
+        "orientation"   : "portrait"
       }
     ],
-    "options": {
-      "schema": {
-      },
-      "form": [
+    "options"       : {
+      "schema"        : { },
+      "form"          : [
         "datasources.main"
       ]
     },
 
-    "libraries": [
+    "libraries"     : [
       {
-        "name": "Joshfire Framework",
-        "homepage": "http://framework.joshfire.com",
-        "description": "The first open source multi-device development framework. Using only standards like HTML5 and JavaScript, it allows developers and integrators to quickly create native and dedicated web apps for browsers, Node.JS, desktops, smart phones, smartTVs and connected objects.",
-        "repositories": [
+        "name"          : "Joshfire Framework",
+        "homepage"      : "http://framework.joshfire.com",
+        "description"   : "The first open source multi-device development framework. Using only standards like HTML5 and JavaScript, it allows developers and integrators to quickly create native and dedicated web apps for browsers, Node.JS, desktops, smart phones, smartTVs and connected objects.",
+        "repositories"  : [
           {
-            "type": "git",
-            "url": "https://github.com/joshfire/joshfire-framework.git"
+            "type"        : "git",
+            "url"         : "https://github.com/joshfire/joshfire-framework.git"
           }
         ],
-        "licenses": [
+        "licenses"      : [
           {
-            "type": "MIT",
-            "url": "https://raw.github.com/joshfire/joshfire-framework/master/LICENSE"
+            "type"        : "MIT",
+            "url"         : "https://raw.github.com/joshfire/joshfire-framework/master/LICENSE"
           }
         ]
       }
     ]
   },
-  "scripts": {
-    "postinstall": "./tools/postinstall.sh"
+  "scripts"         : {
+    "postinstall"     : "./tools/postinstall.sh"
   }
 }
