@@ -49,7 +49,7 @@ define([
      * Called by the Router when the route corresponding to this DS is called
      */
     onNavigate: function () {
-      logger.log('Watching a DS :' + this.slug);
+      logger.log('Watching a DS : ' + this.slug);
       this.app.views.toolbar.setActiveItem(this);
       this.app.showItem(this);
     },
