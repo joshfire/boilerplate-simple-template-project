@@ -162,17 +162,17 @@ a {
       content: " ";
       position: absolute;
       left: 0;
-      border-left: 30px solid #F06;
-      border-top: 41px solid transparent;
-      top: -1px;
+      border-left: 20px solid #FFF;
+      border-top: 30px solid transparent;
+      bottom: -1px;
     }
 
     &:before {
       display: block;
       content: " ";
       position: absolute;
-      border-right: 30px solid #ff0066;
-      border-bottom: 41px solid transparent;
+      border-right: 20px solid #FFF;
+      border-bottom: 30px solid transparent;
       top: -1px;
       right: 0;
     }
