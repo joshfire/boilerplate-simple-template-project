@@ -49,7 +49,7 @@ define([
      * Called by the Router when the route corresponding to this DS is called
      */
     onNavigate: function () {
-      logger.log('Watching a DS !');
+      logger.log('Watching a DS :' + this.slug);
       this.app.views.toolbar.setActiveItem(this);
       this.app.showItem(this);
     },
@@ -58,7 +58,7 @@ define([
      * Called by the Router when the route corresponding to an item in this DS is called
      */
     onNavigateDetails: function (index) {
-      logger.log('Watching the details of a DS ! Item n°' + index);
+      logger.log('Watching the details of a DS : ' + this.slug + ' — Item n°' + index);
       this.app.views.toolbar.setActiveItem(this);
 
       this.details.setModel(this.collection.at(index));
