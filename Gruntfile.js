@@ -62,7 +62,7 @@ module.exports = function(grunt) {
       //HTMLFileDest = 'build/' + HTMLFile.slice(0, - ext[0].length) + (device !== 'browser' ? '.' + device :'')+ ext,
       HTMLFileDest = 'build/app/index' + (adapter !== 'none' ? '.' + adapter : '') + extension;
 
-      grunt.file.write(HTMLFileDest, HTMLFileSrc.replace(new RegExp('data-adapter-' + adapter + ' data-main="([^"]*)" src="[^"]*"'), 'src="main.' + (adapter !== 'none' ? '.' + adapter : '') + 'optimized.js"'));
+      grunt.file.write(HTMLFileDest, HTMLFileSrc.replace(new RegExp('data-adapter-' + adapter + ' data-main="([^"]*)" src="[^"]*"'), 'src="main.' + (adapter !== 'none' ? adapter + '.' : '') + 'optimized.js"'));
       grunt.log.writeln('Wrote ' + HTMLFileDest);
     }, function(err) {
       done();
