@@ -42,7 +42,7 @@
     "devices"       : [
       {
         "devices"       : "phone",
-        "startfile"     : "build/app/index.phone.html",
+        "startfile"     : "app/index.html",
         "images"        : "marketing/small-phone.png",
         "screenshots"   : [],
         "orientation"   : "portrait"

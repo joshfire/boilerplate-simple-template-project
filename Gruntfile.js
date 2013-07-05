@@ -195,6 +195,12 @@ module.exports = function(grunt) {
             dest: 'build/app/media/',
             expand: true
           },
+          {
+            cwd: 'app/css/',
+            src: ['**'],
+            dest: 'build/app/css/',
+            expand: true
+          },
           {/* Keep it until the build is done by the framework */
             cwd: 'app/',
             src: ['bootstrap.js'],
