@@ -1,6 +1,6 @@
 ## Tells git (the Factory) to ignore these files when generating the template archive
 
 ## app folder is ignored because template is using files in build
-app export-ignore
-tests export-ignore
-tools export-ignore
+/app export-ignore
+/tests export-ignore
+/tools export-ignore
