@@ -18,7 +18,7 @@ define([
   'joshlib!collection',
   'joshlib!ui/Item',
 
-  'js/views/List',
+  'devicedetect!List', // a call using the devicedetect plugin ! :)
   'js/controllers/Controller'
 ], function(
   _,
