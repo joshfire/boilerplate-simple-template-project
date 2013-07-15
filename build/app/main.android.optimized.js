@@ -17074,11 +17074,19 @@ define('joshfire-framework/adapters/phone/collection',["joshlib!adapters/none/co
 define('implementations',{
   List: [
     {
+      implementation: 'js/views/List.android',
+
+      isAvailable: function(runtime) {
+        console.log(runtime);
+        return (runtime.os.family.indexOf('Android') > -1);
+      }
+    },
+    {
       implementation: 'js/views/List.phone',
 
       isAvailable: function(runtime) {
-        console.log('Runtime: ', runtime, runtime.os.family.indexOf('Android'));
-        return (runtime.os.family.indexOf('Android') > -1);
+
+        return runtime.formfactor.family === 'phone';
       }
     },
     // default implementation
@@ -17086,13 +17094,13 @@ define('implementations',{
       implementation: 'js/views/List',
 
       isAvailable: function(runtime) {
-        console.log('Runtime: ', runtime);
+
         return true;
       }
     }
   ]
 });
-define('runtime',{"ua":{"family":"Android","major":"4","minor":"0","patch":"2"},"device":{"family":"Galaxy Nexus"},"formfactor":{"family":"phone"},"os":{"family":"Android","major":"4","minor":"0","patch":"2","patchMinor":null}});
+define('runtime',{"device":{"family":"\"Nexus 4\""},"formfactor":{"family":"phone"},"os":{"family":"Android","patchMinor":null},"ua":{}});
 /*globals console*/
 
 define('devicedetect',['implementations', 'runtime'], function (implementations, runtime) {
@@ -17947,7 +17955,7 @@ define('joshfire-framework/ui/list',[
   return UIList;
 });
 
-define('js/views/List.phone',[
+define('js/views/List.android',[
   'joshlib!ui/list',
   'text!templates/spinner.ejs' // The HTML of the spinner
 ], function(
@@ -17958,7 +17966,11 @@ define('js/views/List.phone',[
     initialize: function(opt) {
       this.onScroll = _.bind(this.onScroll, this);
       List.prototype.initialize.call(this, opt);
-      window.alert('yo');
+
+
+      window.alert('ANDROID LIST');
+
+
       // Remove the loader when the data has loaded
       this.collection.on('load', _.bind(this.hideLoader, this));
       // When we're at the end of the list, stop listening for the scroll
@@ -18056,7 +18068,7 @@ define('js/controllers/DatasourceController',[
   'joshlib!collection',
   'joshlib!ui/Item',
 
-  'devicedetect!List',
+  'devicedetect!List', // a call using the devicedetect plugin ! :)
   'js/controllers/Controller'
 ], function(
   _,
@@ -18112,7 +18124,6 @@ define('js/controllers/DatasourceController',[
      */
     getView: function getView () {
       if(!this.view) {
-        console.log(List);
         this.view = new List({
           id: this.slug,
           className: 'list',
@@ -18458,9 +18469,11 @@ require.config({
   paths: {
     // The text plugin returns the contents of a required file as a string. Useful for requiring templates.
     'text'            : 'js/lib/text',
-    // This file is used by devicedetect and contains the mapping of
-    // device-dependent files with their associated tests. I can't seem to phrase this correctly so just RTFC.
-    'implementations' : 'js/lib/devicedetectmap'
+    /*
+    * This file contains the mapping between devices and implementations. It is necessary if the devicedetect
+    * plugin is used anywhere through the app. More details inside.
+    */
+    'implementations' : 'js/lib/implementations'
   }
 });
 
@@ -18469,8 +18482,7 @@ define('main',[
   'js/router'
 ], function(
   App,
-  Router,
-  Parse
+  Router
 ) {
   
 
@@ -18480,6 +18492,3 @@ define('main',[
   });
 
 });
-
-
-
