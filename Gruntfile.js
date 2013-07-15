@@ -12,29 +12,24 @@ module.exports = function(grunt) {
 
   var defaultAdapter = 'none';
   var defaultDevice = 'browser';
-  var uas = {
+  var currentTarget;
+
+  var targetUas = {
     'phone': 'Mozilla/5.0 (iPhone; CPU iPhone OS 5_0 like Mac OS X) AppleWebKit/534.46 (KHTML, like Gecko) Version/5.1 Mobile/9A334 Safari/7534.48.3',
     'android': 'Mozilla/5.0 (Linux; U; Android 4.0.2; en-us; Galaxy Nexus Build/ICL53F) AppleWebKit/534.30 (KHTML, like Gecko) Version/4.0 Mobile Safari/534.30'
+  };
+
+  var targetSpecificOptions = {
+    'android': [
+      '-d', '"Nexus 4"',
+      '-f', 'phone',
+      '-s', 'Android'
+    ]
   };
 
   // ==========================================================================
   // CUSTOM TASKS
   // ==========================================================================
-
-  grunt.registerTask('notify-console', 'Notify the user that the build\'s over', function (arg) {
-    var d = new Date();
-    grunt.log.writeln('Build done, ended at ' +
-      d.getHours() + ':' + d.getMinutes() + ':' + d.getSeconds() + ' !');
-  });
-
-  grunt.registerTask('clean', 'Clean The Mess', function(){
-    grunt.file.delete('app/js/joshlib.js');
-    var files = grunt.file.expand('app/js/main*optimized.js');
-    if(files.length) {
-      grunt.file.delete(files);
-    }
-  });
-
   // Our own "Joshfire" files optimizer
   grunt.registerMultiTask(
     'build',
@@ -50,7 +45,7 @@ module.exports = function(grunt) {
 
     device = data.device || defaultDevice;
     adapter = data.adapter || defaultAdapter;
-
+    currentTarget = this.target;
     // Gets all the Javascript files - And accepts wildcard patterns
     jsFiles = this.data.src.filter(function(i) { return i.match(/\.js/); });
 
@@ -96,20 +91,28 @@ module.exports = function(grunt) {
         callback();
       }
 
-      // Prepare spawn for e.g. node lib/framework/scripts/optimize.js ios main.js
-      var spawnOptions = {
-        cmd: 'node',
-        args: [
-          'js/lib/framework/scripts/optimize.js',
-          adap,
-          JSFile,
-          'true',
-          'info,log',
-          uas[adap]
-        ]
-      };
+      // Base options for this app. (feel free to make some of them
+      // device specific or whatever)
+      var theArgs = [
+        'js/lib/framework/scripts/optimize.js',
+        '-a', adap,
+        '-i', JSFile,
+        '-m', 'true',
+        '-w', 'info,log',
+        '-u', '"' + (targetUas[currentTarget] || '') + '"'
+      ];
 
-      grunt.util.spawn(spawnOptions, doneCallback);
+      // Append the eventual target specific options that will be used
+      // by devicedetect.
+      if (targetSpecificOptions[currentTarget]) {
+        theArgs = theArgs.concat(targetSpecificOptions[currentTarget]);
+      }
+
+      // Run the optimizer !
+      grunt.util.spawn({
+        cmd: 'node',
+        args: theArgs
+      }, doneCallback);
     }
 
     function moveFile(){
@@ -117,7 +120,7 @@ module.exports = function(grunt) {
 
       var filenameIn = JSFile + ( adapter !== 'none' ? '.' + adapter : '' ) + '.optimized.js';
       var filenameOut = JSFile + ( adapter !== 'none' ? '.' + adapter : '' ) + '.optimized.js';
-      console.log(mainPath + filenameIn, buildDir + filenameOut);
+
       grunt.file.copy(mainPath + filenameIn, buildDir + filenameOut);
       grunt.log.writeln('Wrote ' + filenameOut);
       grunt.file.delete(mainPath + filenameIn);
@@ -133,6 +136,36 @@ module.exports = function(grunt) {
       }
     });
   }
+
+  grunt.registerTask('notify-console', 'Notify the user that the build\'s over', function (arg) {
+    var d = new Date();
+    grunt.log.writeln('Build done, ended at ' +
+      d.getHours() + ':' + d.getMinutes() + ':' + d.getSeconds() + ' !');
+  });
+
+  grunt.registerTask('clean', 'Clean The Mess', function() {
+    grunt.file.delete('app/js/joshlib.js');
+    var files = grunt.file.expand('app/js/main*optimized.js');
+    if(files.length) {
+      grunt.file.delete(files);
+    }
+  });
+
+  grunt.registerTask('help', 'Get some help !', function() {
+    var done = this.async();
+    var spawnOptions = {
+      cmd: 'node',
+      args: [
+        'app/js/lib/framework/scripts/optimize.js',
+        '--help'
+      ]
+    };
+    grunt.util.spawn(spawnOptions, function(err, result) {
+      grunt.log.writeln('Optimizer options are :');
+      grunt.log.write(result);
+      done();
+    });
+  });
 
   // Project configuration.
   grunt.initConfig({
