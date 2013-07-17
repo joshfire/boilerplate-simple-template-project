@@ -22,7 +22,7 @@ define([
   'joshlib!ui/CardPanel',
   'joshlib!ui/Item',
 
-  'js/views/Toolbar',
+  'devicedetect!Toolbar',
   'js/controllers/DatasourceController'
 ], function(
   Backbone,

@@ -44,3 +44,228 @@
 a {
   text-decoration: none;
 }
+
+html, body {
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  width: 100%;
+  height: 100%;
+  font-family: "Helvetica Neue", Arial, sans-serif;
+  font-weight: lighter;
+  background: #FFF;
+}
+
+a {
+  text-decoration: none;
+}
+
+#app {
+  overflow: hidden;
+  position: relative;
+  width: 100%;
+  height: 100%;
+  background: #FFF;
+}
+
+.toolbar {
+  text-align: center;
+}
+.toolbar ul {
+  padding: 20px;
+  margin: 0;
+}
+.toolbar li {
+  display: inline-block;
+  margin: 0 10px;
+}
+.toolbar a {
+  color: #000;
+  border-bottom: 1px solid rgba(0, 0, 0, 0);
+  text-decoration: none;
+  -webkit-transition: border-bottom-color 200ms ease-in-out;
+}
+.toolbar a.active,
+.toolbar a:hover {
+  border-bottom-color: black;
+}
+
+.toolbar {
+  position: absolute;
+  width: 100%;
+  height: 50px;
+  z-index: 2;
+}
+
+.content {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  padding-top: 50px;
+  box-sizing: border-box;
+}
+
+.content .list {
+  height: 100%;
+  overflow: auto;
+}
+.content .list.loading ul {
+  padding-bottom: 40px;
+}
+.content .list.loading ul:after {
+  content: 'Loading ...';
+  display: block;
+  position: absolute;
+  z-index: 2;
+  width: 100%;
+  height: 40px;
+  line-height: 30px;
+  text-align: center;
+  bottom: 0;
+}
+.content .list ul {
+  position: relative;
+  padding: 0 20px;
+}
+.content .list li {
+  list-style: none;
+  text-decoration: none;
+  width: 100%;
+  height: 40px;
+}
+.content .list a {
+  background-color: #FFF;
+  color: #000;
+  display: block;
+  width: 100%;
+  height: 100%;
+  line-height: 40px;
+  padding: 0 40px 0 10px;
+  box-sizing: border-box;
+  position: relative;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.content .list a:hover {
+  color: #FFF;
+  background-color: #000;
+}
+.content .list a:hover:after {
+  color: #FFF;
+}
+.content .list a:after {
+  display: block;
+  content: '>';
+  position: absolute;
+  right: 0;
+  top: 0;
+  height: 40px;
+  width: 20px;
+  color: #000;
+  z-index: 2;
+}
+
+.content .details {
+  padding: 0 20px;
+  overflow: auto;
+  height: 100%;
+  -webkit-overflow-scrolling: touch;
+}
+.content .details h2 {
+  position: relative;
+  height: 40px;
+  padding: 0 16px;
+  width: 100%;
+  box-sizing: border-box;
+  margin: 0;
+  background: #000;
+  color: #FFF;
+  text-align: center;
+  line-height: 40px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+.content .details h2:after {
+  display: block;
+  content: " ";
+  position: absolute;
+  left: 0;
+  border-left: 20px solid white;
+  border-top: 30px solid transparent;
+  bottom: -1px;
+}
+.content .details h2:before {
+  display: block;
+  content: " ";
+  position: absolute;
+  border-right: 20px solid white;
+  border-bottom: 30px solid transparent;
+  top: -1px;
+  right: 0;
+}
+.content .details p {
+  line-height: 30px;
+  padding: 0;
+  margin: 0;
+}
+.content .details img {
+  max-width: 100%;
+}
+.content .details a {
+  color: #000;
+  border-bottom: 1px solid rgba(0, 0, 0, 0);
+  -webkit-transition: border-bottom-color 200ms ease-in-out;
+  font-weight: bold;
+}
+.content .details a:hover {
+  border-bottom-color: black;
+}
+
+/**
+* A pretty nice CSS loader
+**/
+.loader-wrapper .loader {
+  position: relative;
+  width: 40px;
+  margin: 50px auto;
+}
+.loader-wrapper .dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 10px;
+  background: #333;
+  position: absolute;
+  animation-duration: 0.5s;
+  animation-timing-function: ease-in-out;
+  animation-iteration-count: infinite;
+  -webkit-animation-duration: 0.5s;
+  -webkit-animation-timing-function: ease-in-out;
+  -webkit-animation-iteration-count: infinite;
+}
+.loader-wrapper .dot1, .loader-wrapper .dot2 {
+  left: 0;
+}
+.loader-wrapper .dot3 {
+  left: 15px;
+}
+.loader-wrapper .dot4 {
+  left: 30px;
+}
+.loader-wrapper .dot1 {
+  animation-name: reveal;
+  -webkit-animation-name: reveal;
+}
+.loader-wrapper .dot2, .loader-wrapper .dot3 {
+  animation-name: slide;
+  -webkit-animation-name: slide;
+}
+.loader-wrapper .dot4 {
+  animation-name: reveal;
+  -webkit-animation-name: reveal;
+  animation-direction: reverse;
+  /* thx @HugoGiraudel */
+  -webkit-animation-direction: reverse;
+  /* thx @HugoGiraudel */
+}

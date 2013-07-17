@@ -7,6 +7,7 @@ define([
 ) {
   return List.extend({
     initialize: function(opt) {
+      this.onScroll = _.bind(this.onScroll, this);
       List.prototype.initialize.call(this, opt);
 
       // Remove the loader when the data has loaded
@@ -24,7 +25,6 @@ define([
         this.enableLoadMore = true;
       }, this));
       this.enableLoadMore = true;
-      this.onScroll = _.bind(this.onScroll, this);
     },
 
     /**

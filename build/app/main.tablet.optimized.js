@@ -17562,7 +17562,7 @@ define('implementations',{
     }
   ]
 });
-define('runtime',{"ua":{"family":"Mobile Safari","major":"5","minor":"1","patch":null},"device":{"family":"iPhone"},"formfactor":{"family":"phone"},"os":{"family":"iPhone OS","major":"5","minor":"0","patch":null,"patchMinor":null}});
+define('runtime',{"device":{},"formfactor":{"family":"tablet"},"os":{"family":"whocares","patchMinor":null},"ua":{}});
 /*globals console*/
 
 define('devicedetect',['implementations', 'runtime'], function (implementations, runtime) {
@@ -18486,7 +18486,7 @@ define('js/views/List',[
     }
   });
 });
-define('js/views/List.phone',[
+define('js/views/List.tablet',[
   'js/views/List'
 ], function(
   List
@@ -18494,7 +18494,7 @@ define('js/views/List.phone',[
   return List.extend({
     initialize: function(opt) {
       List.prototype.initialize.call(this, opt);
-      window.alert('PHONE LIST');
+      window.alert('TABLET LIST');
     }
   });
 });

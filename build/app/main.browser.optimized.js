@@ -16274,33 +16274,32 @@ define('joshfire-framework/collection',[
 define('implementations',{
   List: [
     {
-      implementation: 'js/views/List.android',
-
+      implementation: 'js/views/List.androidphone',
       isAvailable: function(runtime) {
-
-        return (runtime.os.family.indexOf('Android') > -1);
+        return (runtime.os.family.indexOf('Android') > -1 &&
+                  runtime.formfactor.family === 'phone');
       }
     },
     {
       implementation: 'js/views/List.phone',
-
       isAvailable: function(runtime) {
-
         return runtime.formfactor.family === 'phone';
       }
     },
-    // default implementation
+    {
+      implementation: 'js/views/List.tablet',
+      isAvailable: function(runtime) {
+        return runtime.formfactor.family === 'tablet';
+      }
+    },
+    // default implementation (don't forget to set one ! could become ugly)
     {
       implementation: 'js/views/List',
-
-      isAvailable: function(runtime) {
-
-        return true;
-      }
+      isAvailable: function(runtime) { return true; }
     }
   ]
 });
-define('runtime',{"ua":{"family":"Chrome","major":"28","minor":"0","patch":"1500"},"device":{"family":"Other"},"formfactor":{"family":"desktop"},"os":{"family":"Mac OS X","major":"10","minor":"8","patch":"4","patchMinor":null}});
+define('runtime',{"ua":{"family":"Other","major":null,"minor":null,"patch":null},"device":{"family":"Other"},"formfactor":{"family":"desktop"},"os":{"family":"Other","major":null,"minor":null,"patch":null,"patchMinor":null}});
 /*globals console*/
 
 define('devicedetect',['implementations', 'runtime'], function (implementations, runtime) {
@@ -17164,6 +17163,7 @@ define('js/views/List',[
 ) {
   return List.extend({
     initialize: function(opt) {
+      this.onScroll = _.bind(this.onScroll, this);
       List.prototype.initialize.call(this, opt);
 
       // Remove the loader when the data has loaded
@@ -17181,7 +17181,6 @@ define('js/views/List',[
         this.enableLoadMore = true;
       }, this));
       this.enableLoadMore = true;
-      this.onScroll = _.bind(this.onScroll, this);
     },
 
     /**
@@ -17686,5 +17685,4 @@ define('main',[
     device:         'none', //Default adapter is the 'none' one
     router:         Router
   });
-
 });
