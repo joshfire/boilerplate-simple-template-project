@@ -14513,6 +14513,97 @@ define('joshfire-framework/ui/Item',[
   return UIItem;
 });
 
+// This is the dynamic implementation map containing
+// tests.
+
+define('implementations',{
+  List: [
+    {
+      implementation: 'js/views/List.androidphone',
+      isAvailable: function(runtime) {
+        return (runtime.os.family.indexOf('Android') > -1 &&
+                  runtime.formfactor.family === 'phone');
+      }
+    },
+    {
+      implementation: 'js/views/List.phone',
+      isAvailable: function(runtime) {
+        return runtime.formfactor.family === 'phone';
+      }
+    },
+    {
+      implementation: 'js/views/List.tablet',
+      isAvailable: function(runtime) {
+        return runtime.formfactor.family === 'tablet';
+      }
+    },
+    // default implementation (don't forget to set one ! could become ugly)
+    {
+      implementation: 'js/views/List',
+      isAvailable: function(runtime) { return true; }
+    }
+  ],
+
+  Toolbar: [
+    {
+      implementation: 'js/views/Toolbar.tablet',
+      isAvailable: function(runtime) {
+        return runtime.formfactor.family === 'tablet';
+      }
+    },
+    {
+      implementation: 'js/views/Toolbar',
+      isAvailable: function(runtime) { return true; }
+    }
+  ]
+});
+define('runtime',{"ua":{"family":"Other","major":null,"minor":null,"patch":null},"device":{"family":"Other"},"formfactor":{"family":"desktop"},"os":{"family":"Other","major":null,"minor":null,"patch":null,"patchMinor":null}});
+/*globals console*/
+
+define('devicedetect',['implementations', 'runtime'], function (implementations, runtime) {
+
+  var devicedetect = {
+
+    normalize: function (name) {
+      var featureInfo = implementations[name],
+          hasMultipleImpls = Object.prototype.toString.call(featureInfo) === '[object Array]',
+          i, m;
+
+      if (!hasMultipleImpls) {
+        return name;
+      } else {
+
+        var trueRuntime;
+
+        if(typeof runtime === 'function' && typeof navigator !== 'undefined' && navigator.userAgent) {
+          trueRuntime = runtime(navigator.userAgent);
+        } else {
+          trueRuntime = runtime;
+        }
+
+        for (i = 0, m = featureInfo.length; i < m; i++) {
+          var current = featureInfo[i];
+          if (current.isAvailable(trueRuntime)) {
+            if (current && typeof current !== 'undefined') {
+              return current.implementation;
+            }
+          }
+        }
+      }
+
+      console.log('DeviceDetect : Did not find any valid feature for : ' + name);
+      return name;
+
+    },
+
+    load: function (name, req, load) {
+      req([name], function (value) {
+        load(value);
+      });
+    }
+  };
+  return devicedetect;
+});
 /**
  * @license RequireJS text 1.0.8 Copyright (c) 2010-2011, The Dojo Foundation All Rights Reserved.
  * Available via the MIT or new BSD license.
@@ -15978,6 +16069,26 @@ define('js/views/Toolbar',[
     }
   });
 });
+define('js/controllers/Controller',[
+  'joshlib!vendor/backbone'
+], function(
+  Backbone
+) {
+  
+
+  var Controller = function(app, opt) {
+    this.app = app;
+
+    // Calls the controller's "constructor".
+    if (this.initialize) {
+      this.initialize(opt);
+    }
+  };
+
+  // We'll use the extend function of Backbone.Model to enable heritage on our controller
+  Controller.extend = Backbone.Model.extend;
+  return Controller;
+});
 /**
  * @fileoverview Base class for Joshfire schema.io datasource collections.
  *
@@ -16267,84 +16378,6 @@ define('joshfire-framework/collection',[
 
   return newCol;
 
-});
-// This is the dynamic implementation map containing
-// tests.
-
-define('implementations',{
-  List: [
-    {
-      implementation: 'js/views/List.androidphone',
-      isAvailable: function(runtime) {
-        return (runtime.os.family.indexOf('Android') > -1 &&
-                  runtime.formfactor.family === 'phone');
-      }
-    },
-    {
-      implementation: 'js/views/List.phone',
-      isAvailable: function(runtime) {
-        return runtime.formfactor.family === 'phone';
-      }
-    },
-    {
-      implementation: 'js/views/List.tablet',
-      isAvailable: function(runtime) {
-        return runtime.formfactor.family === 'tablet';
-      }
-    },
-    // default implementation (don't forget to set one ! could become ugly)
-    {
-      implementation: 'js/views/List',
-      isAvailable: function(runtime) { return true; }
-    }
-  ]
-});
-define('runtime',{"ua":{"family":"Other","major":null,"minor":null,"patch":null},"device":{"family":"Other"},"formfactor":{"family":"desktop"},"os":{"family":"Other","major":null,"minor":null,"patch":null,"patchMinor":null}});
-/*globals console*/
-
-define('devicedetect',['implementations', 'runtime'], function (implementations, runtime) {
-
-  var devicedetect = {
-
-    normalize: function (name) {
-      var featureInfo = implementations[name],
-          hasMultipleImpls = Object.prototype.toString.call(featureInfo) === '[object Array]',
-          i, m;
-
-      if (!hasMultipleImpls) {
-        return name;
-      } else {
-
-        var trueRuntime;
-
-        if(typeof runtime === 'function' && typeof navigator !== 'undefined' && navigator.userAgent) {
-          trueRuntime = runtime(navigator.userAgent);
-        } else {
-          trueRuntime = runtime;
-        }
-
-        for (i = 0, m = featureInfo.length; i < m; i++) {
-          var current = featureInfo[i];
-          if (current.isAvailable(trueRuntime)) {
-            if (current && typeof current !== 'undefined') {
-              return current.implementation;
-            }
-          }
-        }
-      }
-
-      console.log('DeviceDetect : Did not find any valid feature for : ' + name);
-      return name;
-
-    },
-
-    load: function (name, req, load) {
-      req([name], function (value) {
-        load(value);
-      });
-    }
-  };
-  return devicedetect;
 });
 define('text!templates/spinner.ejs',[],function () { return '<div class="loader">\n  <div class="dot dot1"></div>\n  <div class="dot dot2"></div>\n  <div class="dot dot3"></div>\n  <div class="dot dot4"></div>\n</div>';});
 
@@ -17223,26 +17256,6 @@ define('js/views/List',[
     }
   });
 });
-define('js/controllers/Controller',[
-  'joshlib!vendor/backbone'
-], function(
-  Backbone
-) {
-  
-
-  var Controller = function(app, opt) {
-    this.app = app;
-
-    // Calls the controller's "constructor".
-    if (this.initialize) {
-      this.initialize(opt);
-    }
-  };
-
-  // We'll use the extend function of Backbone.Model to enable heritage on our controller
-  Controller.extend = Backbone.Model.extend;
-  return Controller;
-});
 /**
  * DatasourceController
  *
@@ -17391,7 +17404,7 @@ define('js/app',[
   'joshlib!ui/CardPanel',
   'joshlib!ui/Item',
 
-  'js/views/Toolbar',
+  'devicedetect!Toolbar',
   'js/controllers/DatasourceController'
 ], function(
   Backbone,
