@@ -1,7 +1,7 @@
 {
   "name"            : "simple-template-boilerplate",
   "fullName"        : "Simple Template Boilerplate",
-  "version"         : "0.0.2",
+  "version"         : "0.0.3",
   "description"     : "A starting project to create an application template for the Joshfire Factory",
   "author"          : "Joshfire",
   "contributors"    : [],
@@ -42,7 +42,21 @@
     "devices"       : [
       {
         "devices"       : "phone",
-        "startfile"     : "build/app/index.html",
+        "startfile"     : "build/app/index.phone.html",
+        "images"        : "marketing/small-phone.png",
+        "screenshots"   : [],
+        "orientation"   : "portrait"
+      },
+      {
+        "devices"       : "tablet",
+        "startfile"     : "build/app/index.tablet.html",
+        "images"        : "marketing/small-phone.png",
+        "screenshots"   : [],
+        "orientation"   : "portrait"
+      },
+      {
+        "devices"       : "browser",
+        "startfile"     : "build/app/index.browser.html",
         "images"        : "marketing/small-phone.png",
         "screenshots"   : [],
         "orientation"   : "portrait"
